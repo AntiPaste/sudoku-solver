@@ -40,10 +40,10 @@
 				<version>1.1.4</version>
 				<configuration>
 					<targetClasses>
-						<param>sudoku.solver.*</param>
+						<param>com.harjoitustyo.sudoku.solver.logic.*</param>
 					</targetClasses>
 					<targetTests>
-						<param>sudoku.solver.*</param>
+						<param>com.harjoitustyo.sudoku.solver.logic.*</param>
 					</targetTests>
 				</configuration>
 			</plugin>
