@@ -4,6 +4,6 @@ Sudoku-ratkoja.
 Toteutetaan ohjelma, joka ratkaisee annetun Sudoku-pulman käyttäen useita eri metodeja.
 
 Metodeja:
-	* Päättely: vain yksi numero sääntöjen mukaan kelpaa ruutuun.
-	* Kokeilu: kaksi numeroa kelpaavat ruutuun, valitaan toinen ja jatketaan kunnes tulee ristiriita, jolloin ruutuun kuuluu toinen numero.
-	* ...
+* Päättely: vain yksi numero sääntöjen mukaan kelpaa ruutuun.
+* Kokeilu: kaksi numeroa kelpaavat ruutuun, valitaan toinen ja jatketaan kunnes tulee ristiriita, jolloin ruutuun kuuluu toinen numero.
+* ...
