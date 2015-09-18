@@ -1,53 +1,59 @@
 package com.harjoitustyo.sudoku.solver.logic;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-import com.harjoitustyo.sudoku.solver.logic.Tile;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-/**
- *
- * @author Branch
- */
 public class tileTest {
-	
-	public tileTest() {
-	}
-	
-	@BeforeClass
-	public static void setUpClass() {
-	}
-	
-	@AfterClass
-	public static void tearDownClass() {
-	}
-	
-	@Before
-	public void setUp() {
-	}
-	
-	@After
-	public void tearDown() {
-	}
-
-    // TODO add test methods here.
-	// The methods must be annotated with annotation @Test. For example:
-	//
-	// @Test
-	// public void hello() {}
-	
 	@Test
 	public void tilePrintsCorrectly() {
 		Tile tile = new Tile(0, 0, 3);
 		assertTrue(tile.toString().equals("3"));
+	}
+	
+	@Test
+	public void tileCanAddOnePossibility() {
+		Tile tile = new Tile(0, 0, 3);
+		tile.setPossibilities(new HashSet());
+		
+		Set<Integer> observed = tile.addPossibilities(6);
+		Set<Integer> expected = new HashSet(Arrays.asList(6));
+		
+		assertTrue(expected.equals(observed));
+	}
+	
+	@Test
+	public void tileCanAddManyPossibilities() {
+		Tile tile = new Tile(0, 0, 3);
+		tile.setPossibilities(new HashSet());
+		
+		Set<Integer> observed = tile.addPossibilities(6, 7, 8, 9);
+		Set<Integer> expected = new HashSet(Arrays.asList(6, 7, 8, 9));
+		
+		assertTrue(expected.equals(observed));
+	}
+	
+	@Test
+	public void tileCanRemoveOnePossibility() {
+		Tile tile = new Tile(0, 0, 3);
+		tile.setPossibilities(new HashSet(Arrays.asList(1, 2, 3)));
+		
+		Set<Integer> observed = tile.removePossibilities(1);
+		Set<Integer> expected = new HashSet(Arrays.asList(2, 3));
+		
+		assertTrue(expected.equals(observed));
+	}
+	
+	@Test
+	public void tileCanRemoveManyPossibilities() {
+		Tile tile = new Tile(0, 0, 3);
+		tile.setPossibilities(new HashSet(Arrays.asList(1, 2, 3)));
+		
+		Set<Integer> observed = tile.removePossibilities(2, 3);
+		Set<Integer> expected = new HashSet(Arrays.asList(1));
+		
+		assertTrue(expected.equals(observed));
 	}
 }

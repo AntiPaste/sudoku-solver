@@ -1,53 +1,20 @@
 package com.harjoitustyo.sudoku.solver.logic;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-import com.harjoitustyo.sudoku.solver.logic.Board;
-import com.harjoitustyo.sudoku.solver.logic.Tile;
-import org.junit.After;
-import org.junit.AfterClass;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import static org.junit.Assert.assertTrue;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
-/**
- *
- * @author Branch
- */
 public class boardTest {
 	
 	public Board board;
-	
-	public boardTest() {
-	}
-	
-	@BeforeClass
-	public static void setUpClass() {
-	}
-	
-	@AfterClass
-	public static void tearDownClass() {
-	}
 	
 	@Before
 	public void setUp() {
 		this.board = new Board();
 	}
-	
-	@After
-	public void tearDown() {
-	}
-
-    // TODO add test methods here.
-	// The methods must be annotated with annotation @Test. For example:
-	//
-	// @Test
-	// public void hello() {}
 	
 	@Test
 	public void boardIsInitialised() {
@@ -79,5 +46,66 @@ public class boardTest {
 		}
 		
 		assertTrue(count == (Board.BOARD_SIZE * Board.BOARD_SIZE));
+	}
+	
+	@Test
+	public void boardXYCoordinateToSquareConversionWorks() {
+		List<Coordinate> testCases = new ArrayList();
+		testCases.add(new Coordinate(0, 0));
+		testCases.add(new Coordinate(5, 5));
+		testCases.add(new Coordinate(8, 8));
+		testCases.add(new Coordinate(4, 7));
+		
+		List<Coordinate> expectedResults = new ArrayList();
+		expectedResults.add(new Coordinate(0, 0));
+		expectedResults.add(new Coordinate(3, 3));
+		expectedResults.add(new Coordinate(6, 6));
+		expectedResults.add(new Coordinate(3, 6));
+		
+		Iterator<Coordinate> iteratorTest = testCases.iterator();
+		Iterator<Coordinate> iteratorExpected = expectedResults.iterator();
+		
+		while (iteratorTest.hasNext() && iteratorExpected.hasNext()) {
+			Coordinate testCase = iteratorTest.next();
+			Coordinate expectedResult = iteratorExpected.next();
+			
+			Coordinate square = Board.coordinateToSquare(testCase.x, testCase.y);
+			assertTrue(square.x == expectedResult.x && square.y == expectedResult.y);
+		}
+		
+		// F*** you pit
+		for (int x = 0; x < Board.BOARD_SIZE; x++) {
+			for (int y = 0; y < Board.BOARD_SIZE; y++) {
+				Coordinate test = Board.coordinateToSquare(x, y);
+				assertTrue(test.x == (x < 3 ? 0 : (x < 6 ? 3 : 6)));
+				assertTrue(test.y == (y < 3 ? 0 : (y < 6 ? 3 : 6)));
+			}
+		}
+	}
+	
+	@Test
+	public void boardCoordinateToSquareConversionWorks() {
+		List<Coordinate> testCases = new ArrayList();
+		testCases.add(new Coordinate(0, 0));
+		testCases.add(new Coordinate(5, 5));
+		testCases.add(new Coordinate(8, 8));
+		testCases.add(new Coordinate(4, 7));
+		
+		List<Coordinate> expectedResults = new ArrayList();
+		expectedResults.add(new Coordinate(0, 0));
+		expectedResults.add(new Coordinate(3, 3));
+		expectedResults.add(new Coordinate(6, 6));
+		expectedResults.add(new Coordinate(3, 6));
+		
+		Iterator<Coordinate> iteratorTest = testCases.iterator();
+		Iterator<Coordinate> iteratorExpected = expectedResults.iterator();
+		
+		while (iteratorTest.hasNext() && iteratorExpected.hasNext()) {
+			Coordinate testCase = iteratorTest.next();
+			Coordinate expectedResult = iteratorExpected.next();
+			
+			Coordinate square = Board.coordinateToSquare(new Coordinate(testCase.x, testCase.y));
+			assertTrue(square.x == expectedResult.x && square.y == expectedResult.y);
+		}
 	}
 }
