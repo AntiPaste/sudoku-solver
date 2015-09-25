@@ -2,10 +2,18 @@ package com.harjoitustyo.sudoku.solver.logic;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
+/**
+ * This class represents a single Sudoku board tile, it's state,
+ * and methods used to inspect or manipulate the state.
+ * 
+ * @author Kasper Koho
+ */
 public class Tile {
 	public static final int EMPTY = 0;
+	public static final List<Integer> ALL_NUMBERS = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9);
 	
 	private int x;
 	private int y;
@@ -23,7 +31,7 @@ public class Tile {
 		this.y = y;
 		this.number = number;
 		
-		this.possibilities = new HashSet(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9));
+		this.possibilities = new HashSet(Tile.ALL_NUMBERS);
 		this.removePossibilities(this.number);
 	}
 	

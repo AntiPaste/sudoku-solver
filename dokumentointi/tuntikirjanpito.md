@@ -15,3 +15,8 @@ Kohde: Ohjelman hahmotelma, luokkakaavio, testejä, pit-raportti
 Aika: 3 tuntia  
 Kohde: Solverin ensimmäinen iteraatio, järjestelmien täydentämistä, luokkakaavion parantelu  
 Coberturan rivikattavuus 79% logiikasta.
+
+### 25.9.
+
+Aika: 4 tuntia  
+Kohde: Käyttöliittymän alku, solveriin lisää ratkaisumalleja, koodin siistimistä, luokkakaavion päivittämistä, lisää testejä

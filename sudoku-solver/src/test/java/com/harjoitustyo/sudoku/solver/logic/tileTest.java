@@ -10,7 +10,7 @@ public class tileTest {
 	@Test
 	public void tilePrintsCorrectly() {
 		Tile tile = new Tile(0, 0, 3);
-		assertTrue(tile.toString().equals("3"));
+		assertEquals(tile.toString(), "3");
 	}
 	
 	@Test
@@ -21,7 +21,7 @@ public class tileTest {
 		Set<Integer> observed = tile.addPossibilities(6);
 		Set<Integer> expected = new HashSet(Arrays.asList(6));
 		
-		assertTrue(expected.equals(observed));
+		assertEquals(expected, observed);
 	}
 	
 	@Test
@@ -32,7 +32,7 @@ public class tileTest {
 		Set<Integer> observed = tile.addPossibilities(6, 7, 8, 9);
 		Set<Integer> expected = new HashSet(Arrays.asList(6, 7, 8, 9));
 		
-		assertTrue(expected.equals(observed));
+		assertEquals(expected, observed);
 	}
 	
 	@Test
@@ -43,7 +43,7 @@ public class tileTest {
 		Set<Integer> observed = tile.removePossibilities(1);
 		Set<Integer> expected = new HashSet(Arrays.asList(2, 3));
 		
-		assertTrue(expected.equals(observed));
+		assertEquals(expected, observed);
 	}
 	
 	@Test
@@ -54,6 +54,6 @@ public class tileTest {
 		Set<Integer> observed = tile.removePossibilities(2, 3);
 		Set<Integer> expected = new HashSet(Arrays.asList(1));
 		
-		assertTrue(expected.equals(observed));
+		assertEquals(expected, observed);
 	}
 }

@@ -1,6 +1,16 @@
 package com.harjoitustyo.sudoku.solver.logic;
 
+/**
+ * This class contains the basic state and methods used to
+ * inspect or manipulate a Sudoku board.
+ * 
+ * @author Kasper Koho
+ */
 public class Board {
+
+	/**
+	 * BOARD_SIZE defines the width and height of the board
+	 */
 	public static final int BOARD_SIZE = 9;
 	
 	private Tile[][] tiles;
@@ -14,15 +24,32 @@ public class Board {
 		}
 	}
 	
-	// Calculate the top left coordinate of the 3x3 square we are in
-	// Hard-coded for 9x9 boards
-	public static final Coordinate coordinateToSquare(int x, int y) {
+	/**
+	 * Method returns the top left coordinates of the 3x3 square that
+	 * input coordinate (x, y) falls in
+	 * 
+	 * @note Hard-coded for 9x9 puzzle boards
+	 * 
+	 * @param x any x-coordinate within the 9x9 puzzle board
+	 * @param y any y-coordinate within the 9x9 puzzle board
+	 * @return top left coordinates of the 3x3 square that coordinate (x, y) falls in
+	 */
+		public static final Coordinate coordinateToSquare(int x, int y) {
 		return new Coordinate(
 				(x < 3 ? 0 : (x < 6 ? 3 : 6)),
 				(y < 3 ? 0 : (y < 6 ? 3 : 6))
 		);
 	}
 	
+	/**
+	 * Method returns the top left coordinates of the 3x3 square that
+	 * input coordinate (coordinate.x, coordinate.y) falls in
+	 * 
+	 * @note Hard-coded for 9x9 puzzle boards
+	 * 
+	 * @param coordinate any (x, y) coordinate within the 9x9 puzzle board
+	 * @return top left coordinates of the 3x3 square that coordinate (x, y) falls in
+	 */
 	public static final Coordinate coordinateToSquare(Coordinate coordinate) {
 		return Board.coordinateToSquare(coordinate.x, coordinate.y);
 	}

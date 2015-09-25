@@ -103,9 +103,9 @@ public class parserTest {
 			char character = input.charAt(position);
 			
 			if (character == '-')
-				assertTrue(board.getTileAt(x, y).getNumber() == Tile.EMPTY);
+				assertEquals(board.getTileAt(x, y).getNumber(), Tile.EMPTY);
 			else
-				assertTrue(board.getTileAt(x, y).getNumber() == Character.getNumericValue(character));
+				assertEquals(board.getTileAt(x, y).getNumber(), Character.getNumericValue(character));
 		}
 	}
 }

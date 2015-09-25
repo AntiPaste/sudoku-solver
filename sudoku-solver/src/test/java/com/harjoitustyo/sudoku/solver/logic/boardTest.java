@@ -3,7 +3,8 @@ package com.harjoitustyo.sudoku.solver.logic;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -21,7 +22,7 @@ public class boardTest {
 		Tile[][] tiles = this.board.getTiles();
 		for (int x = 0; x < Board.BOARD_SIZE; x++) {
 			for (int y = 0; y < Board.BOARD_SIZE; y++) {
-				assertTrue(tiles[x][y] != null);
+				assertNotNull(tiles[x][y]);
 			}
 		}
 	}
@@ -45,7 +46,7 @@ public class boardTest {
 			}
 		}
 		
-		assertTrue(count == (Board.BOARD_SIZE * Board.BOARD_SIZE));
+		assertEquals(count, (Board.BOARD_SIZE * Board.BOARD_SIZE));
 	}
 	
 	@Test
@@ -70,15 +71,16 @@ public class boardTest {
 			Coordinate expectedResult = iteratorExpected.next();
 			
 			Coordinate square = Board.coordinateToSquare(testCase.x, testCase.y);
-			assertTrue(square.x == expectedResult.x && square.y == expectedResult.y);
+			assertEquals(square.x, expectedResult.x);
+			assertEquals(square.y, expectedResult.y);
 		}
 		
 		// F*** you pit
 		for (int x = 0; x < Board.BOARD_SIZE; x++) {
 			for (int y = 0; y < Board.BOARD_SIZE; y++) {
 				Coordinate test = Board.coordinateToSquare(x, y);
-				assertTrue(test.x == (x < 3 ? 0 : (x < 6 ? 3 : 6)));
-				assertTrue(test.y == (y < 3 ? 0 : (y < 6 ? 3 : 6)));
+				assertEquals(test.x, (x < 3 ? 0 : (x < 6 ? 3 : 6)));
+				assertEquals(test.y, (y < 3 ? 0 : (y < 6 ? 3 : 6)));
 			}
 		}
 	}
@@ -105,7 +107,8 @@ public class boardTest {
 			Coordinate expectedResult = iteratorExpected.next();
 			
 			Coordinate square = Board.coordinateToSquare(new Coordinate(testCase.x, testCase.y));
-			assertTrue(square.x == expectedResult.x && square.y == expectedResult.y);
+			assertEquals(square.x, expectedResult.x);
+			assertEquals(square.y, expectedResult.y);
 		}
 	}
 }

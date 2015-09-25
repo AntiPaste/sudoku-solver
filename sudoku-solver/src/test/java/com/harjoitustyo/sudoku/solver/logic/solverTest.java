@@ -60,4 +60,44 @@ public class solverTest {
 		Solver solver = new Solver(board);
 		solver.isSolved();
 	}
+	
+	@Test
+	public void solverCanSolveSinglePossibility() {
+		String input =
+			  "12345679-\n"
+			+ "---------\n"
+			+ "---------\n"
+			+ "---------\n"
+			+ "---------\n"
+			+ "---------\n"
+			+ "---------\n"
+			+ "---------\n"
+			+ "---------\n";
+		
+		Board board = Parser.parseBoard(input);
+		Solver solver = new Solver(board);
+		solver.solve();
+		
+		assertEquals(board.getTileAt(8, 0).getNumber(), 8);
+	}
+	
+	@Test
+	public void solverCanSolveSingleSquarePossibility() {
+		String input =
+			  "------123\n"
+			+ "-------5-\n"
+			+ "------7-9\n"
+			+ "---------\n"
+			+ "------8--\n"
+			+ "---------\n"
+			+ "---------\n"
+			+ "---------\n"
+			+ "--------8\n";
+		
+		Board board = Parser.parseBoard(input);
+		Solver solver = new Solver(board);
+		solver.solve();
+		
+		assertEquals(board.getTileAt(7, 2).getNumber(), 8);
+	}
 }

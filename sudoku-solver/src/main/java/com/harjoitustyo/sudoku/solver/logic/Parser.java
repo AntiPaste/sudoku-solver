@@ -1,6 +1,20 @@
 package com.harjoitustyo.sudoku.solver.logic;
 
+/**
+ * This class parses inputs and outputs sensible formats,
+ * such as classes used by the program.
+ * 
+ * @author Kasper Koho
+ */
 public class Parser {
+
+	/**
+	 * Method returns a class representation from the string
+	 * representation of a Sudoku board.
+	 * 
+	 * @param input string representation of a Sudoku board
+	 * @return class representation of the Sudoku board
+	 */
 	public static final Board parseBoard(String input) {
 		String[] rows = input.split("\n");
 		

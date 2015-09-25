@@ -3,6 +3,8 @@ package com.harjoitustyo.sudoku.solver;
 import com.harjoitustyo.sudoku.solver.logic.Board;
 import com.harjoitustyo.sudoku.solver.logic.Parser;
 import com.harjoitustyo.sudoku.solver.logic.Solver;
+import com.harjoitustyo.sudoku.solver.ui.UserInterface;
+import javax.swing.SwingUtilities;
 
 public class Main {
 	public static final String SUDOKU =
@@ -16,11 +18,25 @@ public class Main {
 			+ "32-----87\n"
 			+ "-573-826-\n";
 	
+	public static final String TEST =
+			  "------123\n"
+			+ "-------5-\n"
+			+ "------7-9\n"
+			+ "---------\n"
+			+ "------8--\n"
+			+ "---------\n"
+			+ "---------\n"
+			+ "---------\n"
+			+ "--------8\n";
+	
 	public static void main(String[] args) {
 		Board board = Parser.parseBoard(Main.SUDOKU);
 		Solver solver = new Solver(board);
 		
-		System.out.println(board);
+		UserInterface ui = new UserInterface(board, solver);
+		SwingUtilities.invokeLater(ui);
+		
+		/*System.out.println(board);
 		System.out.println("Solving...");
 		
 		solver.solve();
@@ -28,6 +44,6 @@ public class Main {
 		if (solver.isSolved())
 			System.out.println("Hurray, we solved the puzzle!");
 		else
-			throw new NullPointerException("Does not compute.");
+			throw new NullPointerException("Does not compute.");*/
 	}
 }
