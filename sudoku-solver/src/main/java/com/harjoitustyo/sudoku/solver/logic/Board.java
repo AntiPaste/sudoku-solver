@@ -7,7 +7,6 @@ package com.harjoitustyo.sudoku.solver.logic;
  * @author Kasper Koho
  */
 public class Board {
-
 	/**
 	 * BOARD_SIZE defines the width and height of the board
 	 */
@@ -34,7 +33,7 @@ public class Board {
 	 * @param y any y-coordinate within the 9x9 puzzle board
 	 * @return top left coordinates of the 3x3 square that coordinate (x, y) falls in
 	 */
-		public static final Coordinate coordinateToSquare(int x, int y) {
+	public static final Coordinate coordinateToSquare(int x, int y) {
 		return new Coordinate(
 				(x < 3 ? 0 : (x < 6 ? 3 : 6)),
 				(y < 3 ? 0 : (y < 6 ? 3 : 6))
@@ -68,6 +67,20 @@ public class Board {
 	
 	public void setTiles(Tile[][] tiles) {
 		this.tiles = tiles;
+	}
+	
+	@Override
+	public Board clone() {
+		Board board = new Board();
+		Tile[][] tiles = new Tile[Board.BOARD_SIZE][Board.BOARD_SIZE];
+		for (int x = 0; x < Board.BOARD_SIZE; x++) {
+			for (int y = 0; y < Board.BOARD_SIZE; y++) {
+				tiles[x][y] = new Tile(x, y, this.tiles[x][y].getNumber());
+			}
+		}
+		
+		board.setTiles(tiles);
+		return board;
 	}
 	
 	@Override

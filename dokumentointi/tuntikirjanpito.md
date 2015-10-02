@@ -20,3 +20,8 @@ Coberturan rivikattavuus 79% logiikasta.
 
 Aika: 4 tuntia  
 Kohde: Käyttöliittymän alku, solveriin lisää ratkaisumalleja, koodin siistimistä, luokkakaavion päivittämistä, lisää testejä
+
+### 2.10.
+
+Aika: 4 tuntia  
+Kohde: Käyttöliittymän tekeminen ja viimeistely, koodin siistimistä, testejä

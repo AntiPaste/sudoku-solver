@@ -2,8 +2,9 @@ package com.harjoitustyo.sudoku.solver.logic;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -12,10 +13,27 @@ import java.util.Set;
  * @author Kasper Koho
  */
 public class Solver {
-	private final Board board;
+	private Board board;
+	private final Board original;
 	
 	public Solver(Board board) {
 		this.board = board;
+		this.original = this.board.clone();
+		
+		this.refreshPossibilities();
+	}
+	
+	public Board getBoard() {
+		return this.board;
+	}
+	
+	/**
+	 * Resets the board to it's original state.
+	 */
+	public void reset() {
+		Board board = this.original.clone();
+		this.board = board;
+		
 		this.refreshPossibilities();
 	}
 	
@@ -34,6 +52,19 @@ public class Solver {
 	}
 	
 	/**
+	 * Helper method for counting frequencies.
+	 * 
+	 * @param map map to alter
+	 * @param key key to increment
+	 */
+	public void incrementKey(Map<Integer, Integer> map, Integer key) {
+		if (!map.containsKey(key))
+			map.put(key, 0);
+		
+		map.put(key, map.get(key) + 1);
+	}
+	
+	/**
 	 * Checks the state of the current puzzle to see if it is solved.
 	 * 
 	 * @note Should this be moved into Board?
@@ -41,32 +72,60 @@ public class Solver {
 	 * @return boolean indicating the status of the puzzle (solved, not solved)
 	 */
 	public boolean isSolved() {
-		for (int x = 0; x < Board.BOARD_SIZE; x++) {
-			for (int y = 0; y < Board.BOARD_SIZE; y++) {
-				if (this.board.getTileAt(x, y).getNumber() == Tile.EMPTY) return false;
-			}
-		}
+		boolean solved = true;
 		
-		for (int x = 0; x < Board.BOARD_SIZE; x++) {
-			for (int y = 0; y < Board.BOARD_SIZE; y++) {
-				Coordinate square = Board.coordinateToSquare(x, y);
-				Set<Integer> combination = new HashSet();
+		for (int x = 0, y = 0; x < Board.BOARD_SIZE && y < Board.BOARD_SIZE; x++, y++) {
+			Map<Integer, Integer> rows = new HashMap();
+			Map<Integer, Integer> columns = new HashMap();
+			
+			for (int column = 0; column < Board.BOARD_SIZE; column++) {
+				int number = this.board.getTileAt(column, y).getNumber();
+				if (number == Tile.EMPTY) solved = false;
 				
-				// Check tiles that are in the same horizontal or vertical line,
-				// or in the same 3x3 square as our tile, in a single loop.
-				// Again, hard-coded for 9x9 boards
-				for (int i = 0; i < 9; i++) {
-					combination.add(this.board.getTileAt(i, y).getNumber());
-					combination.add(this.board.getTileAt(x, i).getNumber());
-					combination.add(this.board.getTileAt(square.x + (i % 3), square.y + (i / 3)).getNumber());
+				this.incrementKey(rows, number);
+				
+			}
+			
+			for (int row = 0; row < Board.BOARD_SIZE; row++) {
+				int number = this.board.getTileAt(x, row).getNumber();
+				if (number == Tile.EMPTY) solved = false;
+				
+				this.incrementKey(columns, number);
+			}
+			
+			for (int number = 1; number <= 9; number++) {
+				Integer frequency = rows.get(number);
+				if (frequency != null && frequency > 1) {
+					throw new IllegalStateException("Puzzle solved incorrectly.");
 				}
 				
-				if (combination.size() != 9)
-					throw new IllegalStateException("Puzzle is solved incorrectly.");
+				frequency = columns.get(number);
+				if (frequency != null && frequency > 1) {
+					throw new IllegalStateException("Puzzle solved incorrectly.");
+				}
 			}
 		}
 		
-		return true;
+		for (int x = 0; x < Board.BOARD_SIZE; x += 3) {
+			for (int y = 0; y < Board.BOARD_SIZE; y += 3) {
+				Map<Integer, Integer> square = new HashMap();
+				
+				for (int xSquare = x; xSquare < (x + 3); xSquare++) {
+					for (int ySquare = y; ySquare < (y + 3); ySquare++) {
+						this.incrementKey(square, this.board.getTileAt(xSquare, ySquare).getNumber());
+					}
+				}
+				
+				for (int number = 1; number <= 9; number++) {
+					Integer frequency = square.get(number);
+					if (frequency != null && frequency > 1) {
+						throw new IllegalStateException("Puzzle solved incorrectly.");
+					}
+				}
+			}
+		}
+		
+		return solved;
 	}
 	
 	/**
@@ -99,8 +158,6 @@ public class Solver {
 					
 					tile.removePossibilities(horizontal.getNumber(), vertical.getNumber(), square.getNumber());
 				}
-				
-				this.board.setTileAt(tile, x, y);
 			}
 		}
 	}
@@ -121,12 +178,11 @@ public class Solver {
 				
 				Set<Integer> possibilities = tile.getPossibilities();
 				if (possibilities.size() > 1) continue;
-				if (possibilities.isEmpty()) throw new IllegalArgumentException(String.format("Found a tile which cannot be solved @ %d:%d", x, y));
+				if (possibilities.isEmpty()) throw new IllegalStateException(String.format("Found a tile which cannot be solved @ %d:%d", x + 1, y + 1));
 				
 				int number = possibilities.iterator().next(); // Possibilities cannot be empty
 				
 				tile.setNumber(number);
-				this.board.setTileAt(tile, x, y);
 				this.refreshPossibilities();
 				
 				found++;

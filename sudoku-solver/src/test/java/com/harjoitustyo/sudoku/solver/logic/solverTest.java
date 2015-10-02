@@ -100,4 +100,23 @@ public class solverTest {
 		
 		assertEquals(board.getTileAt(7, 2).getNumber(), 8);
 	}
+	
+	@Test
+	public void solverSolvesCorrectNumberOfTiles() {
+		String input =
+			  "--------1\n"
+			+ "--------2\n"
+			+ "----1---3\n"
+			+ "--------4\n"
+			+ "--------5\n"
+			+ "--1-----6\n"
+			+ "--------7\n"
+			+ "--------8\n"
+			+ "1--------\n";
+		
+		Board board = Parser.parseBoard(input);
+		Solver solver = new Solver(board);
+		
+		assertEquals(solver.solve(), 2);
+	}
 }
