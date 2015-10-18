@@ -39,6 +39,7 @@ public class SolveWorker extends SwingWorker<Void, Void> {
 				System.out.println(this.solver.getBoard());
 				System.out.println("Found: " + found);
 			} catch (IllegalStateException e) {
+				System.out.println(e.getStackTrace());
 				throw e;
 			}
 			

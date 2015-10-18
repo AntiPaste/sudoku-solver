@@ -3,6 +3,7 @@ package com.harjoitustyo.sudoku.solver.logic;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -15,6 +16,21 @@ import java.util.Set;
 public class Solver {
 	private Board board;
 	private final Board original;
+	
+	/**
+	 *
+	 */
+	public static final int FOUND_CONTRADICTION = 0;
+
+	/**
+	 *
+	 */
+	public static final int NO_CONTRADICTION = 1;
+
+	/**
+	 *
+	 */
+	public static final int SOLVED_CONTRADICTION = 2;
 	
 	public Solver(Board board) {
 		this.board = board;
@@ -47,7 +63,9 @@ public class Solver {
 		
 		found += this.checkSinglePossibilities();
 		found += this.checkSquareSinglePossibilities();
+		if (found > 0) return found;
 		
+		found += this.checkContradictions();
 		return found;
 	}
 	
@@ -243,5 +261,107 @@ public class Solver {
 		}
 		
 		return found;
+	}
+    
+	/**
+	 * Checks for contradictions that allow us to deduce the number of a tile.
+	 * @return how many tiles were solved in this iteration
+	 */
+	public int checkContradictions() {
+		for (int x = 0; x < Board.BOARD_SIZE; x++) {
+			for (int y = 0; y < Board.BOARD_SIZE; y++) {
+				Tile tile = this.board.getTileAt(x, y);
+				if (tile.getNumber() != Tile.EMPTY) continue;
+				
+				Set<Integer> possibilities = tile.getPossibilities();
+				if (possibilities.size() != 2) continue;
+				
+				Iterator<Integer> iterator = possibilities.iterator();
+				Board clone = this.board.clone();
+				
+				Integer firstGuess = iterator.next();
+				Integer secondGuess = iterator.next();
+                
+				int contradiction = this.makeAGuess(clone, x, y, firstGuess);
+				if (contradiction == Solver.FOUND_CONTRADICTION) {
+					Tile solved = this.board.getTileAt(x, y);
+					
+					solved.setNumber(secondGuess);
+					this.board.setTileAt(solved, x, y);
+					this.refreshPossibilities();
+					
+					return 1;
+				} else if (contradiction == Solver.SOLVED_CONTRADICTION) {
+					Tile solved = this.board.getTileAt(x, y);
+					
+					solved.setNumber(firstGuess);
+					this.board.setTileAt(solved, x, y);
+					this.refreshPossibilities();
+					
+					return 1;
+				}
+				
+				clone = this.board.clone();
+				contradiction = this.makeAGuess(clone, x, y, secondGuess);
+				if (contradiction == Solver.FOUND_CONTRADICTION) {
+					Tile solved = this.board.getTileAt(x, y);
+					
+					solved.setNumber(firstGuess);
+					this.board.setTileAt(solved, x, y);
+					this.refreshPossibilities();
+					
+					return 1;
+				} else if (contradiction == Solver.SOLVED_CONTRADICTION) {
+					Tile solved = this.board.getTileAt(x, y);
+					
+					solved.setNumber(secondGuess);
+					this.board.setTileAt(solved, x, y);
+					this.refreshPossibilities();
+					
+					return 1;
+				}
+			}
+		}
+		
+		return 0;
+	}
+	
+	/**
+	 * Guesses that the tile at coordinates (x, y) has a certain number.
+	 * If exceptions happen, we have found a contradiction.
+	 * 
+	 * @param board Sudoku board
+	 * @param x x-coordinate of the tile to guess
+	 * @param y y-coordinate of the tile to guess
+	 * @param number number that we should guess
+	 * @return whether we found a contradiction or not
+	 */
+	public int makeAGuess(Board board, int x, int y, int number) {		
+		Tile tile = board.getTileAt(x, y);
+		tile.setIsGuess(true);
+		tile.setNumber(number);
+		board.setTileAt(tile, x, y);
+
+		Solver solver = new Solver(board);
+
+		int found;
+		
+		do {
+			try {
+				found = solver.solve();
+			} catch (IllegalStateException e) {
+				return Solver.FOUND_CONTRADICTION;
+			}
+		} while (found > 0);
+		
+		try {
+			if (solver.isSolved()) {
+				return Solver.SOLVED_CONTRADICTION;
+			}
+		} catch (IllegalStateException e) {
+			return Solver.FOUND_CONTRADICTION;
+		}
+		
+		return Solver.NO_CONTRADICTION;
 	}
 }

@@ -25,3 +25,8 @@ Kohde: Käyttöliittymän alku, solveriin lisää ratkaisumalleja, koodin siisti
 
 Aika: 4 tuntia  
 Kohde: Käyttöliittymän tekeminen ja viimeistely, koodin siistimistä, testejä
+
+### 18.10
+
+Aika: 2 tuntia  
+Kohde: Kokeilumenetelmä, projektin viimeistely
